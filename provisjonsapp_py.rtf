@@ -1,0 +1,39 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import streamlit as st\
+\
+# App title\
+st.title("Frei AS - Provisjonskalkulator")\
+\
+# Input fields\
+arslonn = st.number_input("\'c5rsl\'f8nn (kr)", min_value=0, value=500000, step=10000)\
+vektet_timepris = st.number_input("Vektet fakturerbar verdi per time (kr)", min_value=0, value=1100, step=50)\
+timelonn = st.number_input("Timel\'f8nn (kr)", min_value=0, value=500, step=10)\
+fakturerbare_timer = st.slider("Fakturerbare timer per m\'e5ned", min_value=0, max_value=200, value=130)\
+\
+# Beregning\
+social_cost_multiplier = 1.4\
+provision_threshold = 130\
+provision_rate = 0.5\
+\
+# Beregn kostnad per time (inkludert sosiale kostnader)\
+kostnad_per_time = timelonn * social_cost_multiplier\
+\
+# Beregn margin per time\
+margin_per_time = vektet_timepris - kostnad_per_time\
+\
+# Beregn provisjon\
+if fakturerbare_timer > provision_threshold:\
+    overskytende_timer = fakturerbare_timer - provision_threshold\
+    total_provision = overskytende_timer * margin_per_time * provision_rate\
+else:\
+    total_provision = 0\
+\
+# Vis resultater\
+st.subheader("Resultat")\
+st.write(f"**Total provisjon:** \{total_provision:,.2f\} kr")}
